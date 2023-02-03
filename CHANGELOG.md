@@ -1,0 +1,6 @@
+# @digitalbazaar/ecdsa-multikey ChangeLog
+
+## 1.0.0 - 2023-xx-xx
+
+### Added
+- Initial version.
