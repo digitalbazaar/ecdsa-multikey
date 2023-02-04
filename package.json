@@ -1,6 +1,6 @@
 {
   "name": "@digitalbazaar/ecdsa-multikey",
-  "version": "1.0.1-0",
+  "version": "1.0.0",
   "description": "Javascript library for generating and working with EcdsaMultikey key pairs.",
   "homepage": "https://github.com/digitalbazaar/ecdsa-multikey",
   "repository": {
@@ -15,7 +15,8 @@
     "lib/**/*.js"
   ],
   "dependencies": {
-    "base58-universal": "^2.0.0"
+    "base58-universal": "^2.0.0",
+    "base64url-universal": "^2.0.0"
   },
   "devDependencies": {
     "c8": "^7.11.3",
