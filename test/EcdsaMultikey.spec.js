@@ -5,7 +5,7 @@ import chai from 'chai';
 import * as base58 from 'base58-universal';
 import multibase from 'multibase';
 import multicodec from 'multicodec';
-import {MULTIBASE_BASE58_HEADER} from '../lib/constants';
+import {MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
 import {CryptoKey, EcdsaCurve} from '../lib/ecdsa.js';
 import * as EcdsaMultikey from '../lib/index.js';
 import {mockKey} from './mock-data.js';
