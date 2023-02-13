@@ -50,16 +50,16 @@ npm install
 
 To generate a new public/secret key pair:
 
-* `{string} [id]` Optional id for the generated key.
-* `{string} [controller]` Optional controller URI or DID to initialize the
-  generated key. (This will also init the key id.)
-* `{string} [seed]` Optional deterministic seed value from which to generate the
-  key.
+* `{string} [curve]` \[Required\] ECDSA curve used to generate the key:
+  \['P-256', 'P-384', 'P-521'\].
+* `{string} [id]` \[Optional\] ID for the generated key.
+* `{string} [controller]` \[Optional\] Controller URI or DID to initialize the
+  generated key. (This will be used to generate `id` if it is not explicitly defined.)
 
 ```js
 import * as EcdsaMultikey from '@digitalbazaar/ecdsa-multikey';
 
-const edKeyPair = await EcdsaMultikey.generate();
+const keyPair = await EcdsaMultikey.generate({curve: 'P-384'});
 ```
 
 ### Importing a key pair from storage
@@ -82,9 +82,9 @@ await keyPair.export({publicKey: true});
 // ->
 {
   type: 'Multikey',
-  id: 'did:example:1234#z6Mkon3Necd6NkkyfoGoHxid2znGc59LU3K7mubaRcFbLfLX',
+  id: 'did:example:1234#zynkWQ2LUf58H4VwLGjscwb9KJwGUmqBFXdJKnCXxDMciFXioY7Hq7MvEdVfsBiQSVa9k9',
   controller: 'did:example:1234',
-  publicKeyMultibase: 'z6Mkon3Necd6NkkyfoGoHxid2znGc59LU3K7mubaRcFbLfLX'
+  publicKeyMultibase: 'zynkWQ2LUf58H4VwLGjscwb9KJwGUmqBFXdJKnCXxDMciFXioY7Hq7MvEdVfsBiQSVa9k9'
 }
 ```
 
@@ -98,10 +98,10 @@ await keyPair.export({publicKey: true, secretKey: true});
 // ->
 {
   type: 'Multikey',
-  id: 'did:example:1234#z6Mkon3Necd6NkkyfoGoHxid2znGc59LU3K7mubaRcFbLfLX',
+  id: 'did:example:1234#zynkWQ2LUf58H4VwLGjscwb9KJwGUmqBFXdJKnCXxDMciFXioY7Hq7MvEdVfsBiQSVa9k9',
   controller: 'did:example:1234',
-  publicKeyMultibase: 'z6Mkon3Necd6NkkyfoGoHxid2znGc59LU3K7mubaRcFbLfLX',
-  secretKeyMultibase: 'zruzf4Y29hDp7vLoV3NWzuymGMTtJcQfttAWzESod4wV2fbPvEp4XtzGp2VWwQSQAXMxDyqrnVurYg2sBiqiu1FHDDM'
+  publicKeyMultibase: 'zynkWQ2LUf58H4VwLGjscwb9KJwGUmqBFXdJKnCXxDMciFXioY7Hq7MvEdVfsBiQSVa9k9',
+  secretKeyMultibase: 'zEbCcd62anxNxioGCdP818UobJn1oEmgL5PHUvQ5AvdyVeLJxeJ4Kr73RqqvG5DN7Zq48'
 }
 ```
 
@@ -111,14 +111,14 @@ In order to perform a cryptographic signature, you need to create a `sign`
 function, and then invoke it.
 
 ```js
-const keyPair = EcdsaMultikey.generate();
+const keyPair = EcdsaMultikey.generate({curve: 'P-256'});
 
 const {sign} = keyPair.signer();
 
 // data is a Uint8Array of bytes
 const data = (new TextEncoder()).encode('test data goes here');
 // Signing also outputs a Uint8Array, which you can serialize to text etc.
-const signatureValueBytes = await sign({data});
+const signature = await sign({data});
 ```
 
 ### Creating a verifier function
@@ -127,7 +127,7 @@ In order to verify a cryptographic signature, you need to create a `verify`
 function, and then invoke it (passing it the data to verify, and the signature).
 
 ```js
-const keyPair = EcdsaMultikey.generate();
+const keyPair = EcdsaMultikey.generate({curve: 'P-521'});
 
 const {verify} = keyPair.verifier();
 
@@ -151,4 +151,4 @@ Digital Bazaar: support@digitalbazaar.com
 
 ## License
 
-[New BSD License (3-clause)](LICENSE) © 2020 Digital Bazaar
+[New BSD License (3-clause)](LICENSE) © 2023 Digital Bazaar
