@@ -1,8 +1,8 @@
 /*!
  * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
  */
-import chai from 'chai';
 import * as base58 from 'base58-universal';
+import chai from 'chai';
 import multibase from 'multibase';
 import multicodec from 'multicodec';
 import {MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
