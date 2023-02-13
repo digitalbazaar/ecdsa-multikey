@@ -10,13 +10,16 @@
   "license": "BSD-3-Clause",
   "type": "module",
   "exports": "./lib/index.js",
-  "browser": {},
+  "browser": {
+    "./lib/ecdsa.js": "./lib/ecdsa-browser.js"
+  },
   "files": [
     "lib/**/*.js"
   ],
   "dependencies": {
     "base58-universal": "^2.0.0",
-    "base64url-universal": "^2.0.0"
+    "base64url-universal": "^2.0.0",
+    "multiformats": "^11.0.1"
   },
   "devDependencies": {
     "c8": "^7.11.3",
