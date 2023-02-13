@@ -35,8 +35,8 @@ describe('EcdsaMultikey', () => {
       expect(keyPair).to.have.property('secretKeyMultibase');
       expect(keyPair).to.have.property('publicKey');
       expect(keyPair?.publicKey instanceof CryptoKey).to.be.true;
-      expect(keyPair).to.have.property('privateKey');
-      expect(keyPair?.privateKey instanceof CryptoKey).to.be.true;
+      expect(keyPair).to.have.property('secretKey');
+      expect(keyPair?.secretKey instanceof CryptoKey).to.be.true;
       expect(keyPair).to.have.property('export');
       expect(keyPair).to.have.property('signer');
       expect(keyPair).to.have.property('verifier');
@@ -57,7 +57,7 @@ describe('EcdsaMultikey', () => {
         curve: EcdsaCurve.P256
       });
       const keyPairExported = await keyPair.export({
-        publicKey: true, privateKey: true
+        publicKey: true, secretKey: true
       });
 
       const expectedProperties = [
@@ -120,11 +120,11 @@ describe('EcdsaMultikey', () => {
         curve: EcdsaCurve.P256
       });
       const keyPairExported = await keyPair.export({
-        publicKey: true, privateKey: true
+        publicKey: true, secretKey: true
       });
       const keyPairImported = await EcdsaMultikey.from(keyPairExported);
 
-      expect(await keyPairImported.export({publicKey: true, privateKey: true}))
+      expect(await keyPairImported.export({publicKey: true, secretKey: true}))
         .to.eql(keyPairExported);
     });
   });
