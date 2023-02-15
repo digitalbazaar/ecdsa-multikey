@@ -8,12 +8,13 @@ function varintToHex(data) {
 }
 
 function main() {
-  console.log(varintToHex(0x1200));
-  console.log(varintToHex(0x1201));
-  console.log(varintToHex(0x1202));
-  console.log(varintToHex(0x1303));
-  console.log(varintToHex(0x1304));
-  console.log(varintToHex(0x1305));
+  console.log('varint -> hex:');
+  console.log('0x1200 ->', `0x${Buffer.from(varintToHex(0x1200)).toString('hex')}`);
+  console.log('0x1201 ->', `0x${Buffer.from(varintToHex(0x1201)).toString('hex')}`);
+  console.log('0x1202 ->', `0x${Buffer.from(varintToHex(0x1202)).toString('hex')}`);
+  console.log('0x1306 ->', `0x${Buffer.from(varintToHex(0x1306)).toString('hex')}`);
+  console.log('0x1307 ->', `0x${Buffer.from(varintToHex(0x1307)).toString('hex')}`);
+  console.log('0x1308 ->', `0x${Buffer.from(varintToHex(0x1308)).toString('hex')}`);
 }
 
 main();
