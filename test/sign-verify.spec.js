@@ -17,9 +17,9 @@ const verifier = keyPair.verifier();
 describe('sign and verify', () => {
   it('works properly', async () => {
     signer.should.have.property('id',
-      'did:example:1234#zynkLvFajqEANBYZ7BbjYfjZWEKxC2o1cFWbvsK4XzSDyjJ6Unze3XNAvBNKkfCPRHAEQY');
+      'did:example:1234#zDnaeoFkNN2fa9z48CZ8zpSx9gcUYNJFK35BnScSHtb22REor');
     verifier.should.have.property('id',
-      'did:example:1234#zynkLvFajqEANBYZ7BbjYfjZWEKxC2o1cFWbvsK4XzSDyjJ6Unze3XNAvBNKkfCPRHAEQY');
+      'did:example:1234#zDnaeoFkNN2fa9z48CZ8zpSx9gcUYNJFK35BnScSHtb22REor');
     const data = stringToUint8Array('test 1234');
     const signature = await signer.sign({data});
     const result = await verifier.verify({data, signature});
