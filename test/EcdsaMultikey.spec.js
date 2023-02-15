@@ -96,9 +96,9 @@ describe('EcdsaMultikey', () => {
         {type, controller, publicKeyMultibase, secretKeyMultibase}
       );
 
-      // _ensurePublicKeyEncoding({keyPair, publicKeyMultibase});
+      _ensurePublicKeyEncoding({keyPair, publicKeyMultibase});
       expect(keyPair.id).to.equal(
-        'did:example:1234#zynkLvFajqEANBYZ7BbjYfjZWEKxC2o1cFWbvsK4XzSDyjJ6Unze3XNAvBNKkfCPRHAEQY'
+        'did:example:1234#zDnaeoFkNN2fa9z48CZ8zpSx9gcUYNJFK35BnScSHtb22REor'
       );
     });
 
@@ -133,7 +133,7 @@ describe('EcdsaMultikey', () => {
 function _ensurePublicKeyEncoding({keyPair, publicKeyMultibase}) {
   keyPair.publicKeyMultibase.startsWith(MULTIBASE_BASE58_HEADER).should.be.true;
   const mcPubkeyBytes = multibase.decode(publicKeyMultibase);
-  const mcType = multicodec.getCodec(mcPubkeyBytes);
+  const mcType = multicodec.getNameFromData(mcPubkeyBytes);
   mcType.should.equal('p256-pub');
   const pubkeyBytes =
     multicodec.addPrefix('p256-pub', multicodec.rmPrefix(mcPubkeyBytes));
