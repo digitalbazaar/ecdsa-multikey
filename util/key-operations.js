@@ -2,14 +2,14 @@
  * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
  */
 import * as base58 from 'base58-universal';
-import {EcdsaCurve} from '../lib/ecdsa.js';
+import {ECDSA_CURVE} from '../lib/constants.js';
 import * as EcdsaMultikey from '../lib/index.js';
 import {stringToUint8Array} from '../test/text-encoder.js';
 
 // generates ECDSA key pair
 async function generateKeyPair(options = {}) {
   if(!options.curve) {
-    options.curve = EcdsaCurve.P256;
+    options.curve = ECDSA_CURVE.P256;
   }
   if(!options.controller) {
     options.controller = 'did:example:1234';

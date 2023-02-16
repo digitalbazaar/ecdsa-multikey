@@ -5,8 +5,8 @@ import * as base58 from 'base58-universal';
 import chai from 'chai';
 import multibase from 'multibase';
 import multicodec from 'multicodec';
-import {MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
-import {CryptoKey, EcdsaCurve} from '../lib/ecdsa.js';
+import {ECDSA_CURVE, MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
+import {CryptoKey} from '../lib/ecdsa.js';
 import * as EcdsaMultikey from '../lib/index.js';
 import {mockKey} from './mock-data.js';
 const should = chai.should();
@@ -25,7 +25,7 @@ describe('EcdsaMultikey', () => {
       let keyPair;
       let error;
       try {
-        keyPair = await EcdsaMultikey.generate({curve: EcdsaCurve.P256});
+        keyPair = await EcdsaMultikey.generate({curve: ECDSA_CURVE.P256});
       } catch(e) {
         error = e;
       }
@@ -54,7 +54,7 @@ describe('EcdsaMultikey', () => {
       const keyPair = await EcdsaMultikey.generate({
         id: '4e0db4260c87cc200df3',
         controller: 'did:example:1234',
-        curve: EcdsaCurve.P256
+        curve: ECDSA_CURVE.P256
       });
       const keyPairExported = await keyPair.export({
         publicKey: true, secretKey: true
@@ -76,7 +76,7 @@ describe('EcdsaMultikey', () => {
     it('should only export public key if specified', async () => {
       const keyPair = await EcdsaMultikey.generate({
         id: '4e0db4260c87cc200df3',
-        curve: EcdsaCurve.P256
+        curve: ECDSA_CURVE.P256
       });
       const keyPairExported = await keyPair.export({publicKey: true});
 
@@ -114,7 +114,7 @@ describe('EcdsaMultikey', () => {
     it('should round-trip load exported keys', async () => {
       const keyPair = await EcdsaMultikey.generate({
         id: '4e0db4260c87cc200df3',
-        curve: EcdsaCurve.P256
+        curve: ECDSA_CURVE.P256
       });
       const keyPairExported = await keyPair.export({
         publicKey: true, secretKey: true
