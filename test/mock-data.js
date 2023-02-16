@@ -3,6 +3,7 @@
  */
 export const mockKey = {
   type: 'Multikey',
-  publicKeyMultibase: 'zDnaeoFkNN2fa9z48CZ8zpSx9gcUYNJFK35BnScSHtb22REor',
-  secretKeyMultibase: 'z42trR7ibcmDECM1ieAwJNGzJAVNcRcwWjVnvQU4ELsbQcny'
+  controller: 'did:example:1234',
+  publicKeyMultibase: 'zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw',
+  secretKeyMultibase: 'z42twirSb1PULt5Sg6gjgNMsdiLycu6fbA83aX1vVb8e3ncP'
 };

@@ -52,7 +52,7 @@ describe('EcdsaMultikey', () => {
   describe('export', () => {
     it('should export id, type and key material', async () => {
       const keyPair = await EcdsaMultikey.generate({
-        id: 'urn:uuid:78c94565-c32e-4e0d-b426-0c87cc200df3',
+        id: '4e0db4260c87cc200df3',
         controller: 'did:example:1234',
         curve: EcdsaCurve.P256
       });
@@ -70,35 +70,32 @@ describe('EcdsaMultikey', () => {
 
       expect(keyPairExported.controller).to.equal('did:example:1234');
       expect(keyPairExported.type).to.equal('Multikey');
-      expect(keyPairExported.id).to.equal('urn:uuid:78c94565-c32e-4e0d-b426-0c87cc200df3');
+      expect(keyPairExported.id).to.equal('4e0db4260c87cc200df3');
     });
 
     it('should only export public key if specified', async () => {
       const keyPair = await EcdsaMultikey.generate({
-        id: 'urn:uuid:78c94565-c32e-4e0d-b426-0c87cc200df3',
+        id: '4e0db4260c87cc200df3',
         curve: EcdsaCurve.P256
       });
       const keyPairExported = await keyPair.export({publicKey: true});
 
       expect(keyPairExported).not.to.have.property('secretKeyMultibase');
       expect(keyPairExported).to.have.property('publicKeyMultibase');
-      expect(keyPairExported).to.have.property('id', 'urn:uuid:78c94565-c32e-4e0d-b426-0c87cc200df3');
+      expect(keyPairExported).to.have.property('id', '4e0db4260c87cc200df3');
       expect(keyPairExported).to.have.property('type', 'Multikey');
     });
   });
 
   describe('from', () => {
     it('should auto-set key.id based on controller', async () => {
-      const {type, publicKeyMultibase, secretKeyMultibase} = mockKey;
-      const controller = 'did:example:1234';
+      const {publicKeyMultibase} = mockKey;
 
-      const keyPair = await EcdsaMultikey.from(
-        {type, controller, publicKeyMultibase, secretKeyMultibase}
-      );
+      const keyPair = await EcdsaMultikey.from(mockKey);
 
       _ensurePublicKeyEncoding({keyPair, publicKeyMultibase});
       expect(keyPair.id).to.equal(
-        'did:example:1234#zDnaeoFkNN2fa9z48CZ8zpSx9gcUYNJFK35BnScSHtb22REor'
+        'did:example:1234#zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw'
       );
     });
 
@@ -116,7 +113,7 @@ describe('EcdsaMultikey', () => {
 
     it('should round-trip load exported keys', async () => {
       const keyPair = await EcdsaMultikey.generate({
-        id: 'urn:uuid:78c94565-c32e-4e0d-b426-0c87cc200df3',
+        id: '4e0db4260c87cc200df3',
         curve: EcdsaCurve.P256
       });
       const keyPairExported = await keyPair.export({
