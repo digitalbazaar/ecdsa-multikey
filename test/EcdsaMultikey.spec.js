@@ -6,7 +6,7 @@ import chai from 'chai';
 import multibase from 'multibase';
 import multicodec from 'multicodec';
 import {ECDSA_CURVE, MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
-import {CryptoKey} from '../lib/ecdsa.js';
+import {CryptoKey} from '../lib/crypto.js';
 import * as EcdsaMultikey from '../lib/index.js';
 import {mockKey} from './mock-data.js';
 const should = chai.should();
