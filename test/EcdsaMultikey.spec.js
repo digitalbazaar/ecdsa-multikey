@@ -8,7 +8,12 @@ import multicodec from 'multicodec';
 import {ECDSA_CURVE, MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
 import {CryptoKey} from '../lib/crypto.js';
 import * as EcdsaMultikey from '../lib/index.js';
-import {mockKey} from './mock-data.js';
+import {
+  mockEcdsaSecp256r1VerificationKey2019,
+  mockEcdsaSecp384r1VerificationKey2019,
+  mockEcdsaSecp521r1VerificationKey2019,
+  mockKey
+} from './mock-data.js';
 const should = chai.should();
 const {expect} = chai;
 
@@ -123,6 +128,45 @@ describe('EcdsaMultikey', () => {
 
       expect(await keyPairImported.export({publicKey: true, secretKey: true}))
         .to.eql(keyPairExported);
+    });
+  });
+
+  describe('Backwards compat with EcdsaSecp256r1VerificationKey2019', () => {
+    it('Multikey should import from EcdsaSecp256r1VerificationKey2019', async () => {
+      const keyPair = await EcdsaMultikey.from(mockEcdsaSecp256r1VerificationKey2019);
+      const data = (new TextEncoder()).encode('test data goes here');
+      const signature = await keyPair.signer().sign({data});
+
+      expect(
+        await keyPair.verifier()
+          .verify({data, signature})
+      ).to.be.true;
+    });
+  });
+
+  describe('Backwards compat with EcdsaSecp384r1VerificationKey2019', () => {
+    it('Multikey should import from EcdsaSecp384r1VerificationKey2019', async () => {
+      const keyPair = await EcdsaMultikey.from(mockEcdsaSecp384r1VerificationKey2019);
+      const data = (new TextEncoder()).encode('test data goes here');
+      const signature = await keyPair.signer().sign({data});
+
+      expect(
+        await keyPair.verifier()
+          .verify({data, signature})
+      ).to.be.true;
+    });
+  });
+
+  describe('Backwards compat with EcdsaSecp521r1VerificationKey2019', () => {
+    it('Multikey should import from EcdsaSecp521r1VerificationKey2019', async () => {
+      const keyPair = await EcdsaMultikey.from(mockEcdsaSecp521r1VerificationKey2019);
+      const data = (new TextEncoder()).encode('test data goes here');
+      const signature = await keyPair.signer().sign({data});
+
+      expect(
+        await keyPair.verifier()
+          .verify({data, signature})
+      ).to.be.true;
     });
   });
 });
