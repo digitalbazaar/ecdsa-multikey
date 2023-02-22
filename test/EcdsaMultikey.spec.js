@@ -9,10 +9,10 @@ import {ECDSA_CURVE, MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
 import {CryptoKey} from '../lib/crypto.js';
 import * as EcdsaMultikey from '../lib/index.js';
 import {
-  mockEcdsaSecp256r1VerificationKey2019,
-  mockEcdsaSecp384r1VerificationKey2019,
-  mockEcdsaSecp521r1VerificationKey2019,
-  mockKey
+  mockKey,
+  mockKeyEcdsaSecp256,
+  mockKeyEcdsaSecp384,
+  mockKeyEcdsaSecp521
 } from './mock-data.js';
 const should = chai.should();
 const {expect} = chai;
@@ -132,8 +132,8 @@ describe('EcdsaMultikey', () => {
   });
 
   describe('Backwards compat with EcdsaSecp256r1VerificationKey2019', () => {
-    it('Multikey should import from EcdsaSecp256r1VerificationKey2019', async () => {
-      const keyPair = await EcdsaMultikey.from(mockEcdsaSecp256r1VerificationKey2019);
+    it('Multikey should import properly', async () => {
+      const keyPair = await EcdsaMultikey.from(mockKeyEcdsaSecp256);
       const data = (new TextEncoder()).encode('test data goes here');
       const signature = await keyPair.signer().sign({data});
 
@@ -145,8 +145,8 @@ describe('EcdsaMultikey', () => {
   });
 
   describe('Backwards compat with EcdsaSecp384r1VerificationKey2019', () => {
-    it('Multikey should import from EcdsaSecp384r1VerificationKey2019', async () => {
-      const keyPair = await EcdsaMultikey.from(mockEcdsaSecp384r1VerificationKey2019);
+    it('Multikey should import properly', async () => {
+      const keyPair = await EcdsaMultikey.from(mockKeyEcdsaSecp384);
       const data = (new TextEncoder()).encode('test data goes here');
       const signature = await keyPair.signer().sign({data});
 
@@ -158,8 +158,8 @@ describe('EcdsaMultikey', () => {
   });
 
   describe('Backwards compat with EcdsaSecp521r1VerificationKey2019', () => {
-    it('Multikey should import from EcdsaSecp521r1VerificationKey2019', async () => {
-      const keyPair = await EcdsaMultikey.from(mockEcdsaSecp521r1VerificationKey2019);
+    it('Multikey should import properly', async () => {
+      const keyPair = await EcdsaMultikey.from(mockKeyEcdsaSecp521);
       const data = (new TextEncoder()).encode('test data goes here');
       const signature = await keyPair.signer().sign({data});
 
