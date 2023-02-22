@@ -16,10 +16,14 @@ const verifier = keyPair.verifier();
 
 describe('sign and verify', () => {
   it('works properly', async () => {
-    signer.should.have.property('id',
-      'did:example:1234#zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw');
-    verifier.should.have.property('id',
-      'did:example:1234#zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw');
+    signer.should.have.property(
+      'id',
+      'did:example:1234#zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw'
+    );
+    verifier.should.have.property(
+      'id',
+      'did:example:1234#zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw'
+    );
     const data = stringToUint8Array('test 1234');
     const signature = await signer.sign({data});
     const result = await verifier.verify({data, signature});
