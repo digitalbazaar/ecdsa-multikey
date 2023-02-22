@@ -82,9 +82,9 @@ await keyPair.export({publicKey: true});
 // ->
 {
   type: 'Multikey',
-  id: 'did:example:1234#zynkWQ2LUf58H4VwLGjscwb9KJwGUmqBFXdJKnCXxDMciFXioY7Hq7MvEdVfsBiQSVa9k9',
+  id: 'did:example:1234#zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw',
   controller: 'did:example:1234',
-  publicKeyMultibase: 'zynkWQ2LUf58H4VwLGjscwb9KJwGUmqBFXdJKnCXxDMciFXioY7Hq7MvEdVfsBiQSVa9k9'
+  publicKeyMultibase: 'zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw'
 }
 ```
 
@@ -98,10 +98,10 @@ await keyPair.export({publicKey: true, secretKey: true});
 // ->
 {
   type: 'Multikey',
-  id: 'did:example:1234#zynkWQ2LUf58H4VwLGjscwb9KJwGUmqBFXdJKnCXxDMciFXioY7Hq7MvEdVfsBiQSVa9k9',
+  id: 'did:example:1234#zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw',
   controller: 'did:example:1234',
-  publicKeyMultibase: 'zynkWQ2LUf58H4VwLGjscwb9KJwGUmqBFXdJKnCXxDMciFXioY7Hq7MvEdVfsBiQSVa9k9',
-  secretKeyMultibase: 'zEbCcd62anxNxioGCdP818UobJn1oEmgL5PHUvQ5AvdyVeLJxeJ4Kr73RqqvG5DN7Zq48'
+  publicKeyMultibase: 'zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw',
+  secretKeyMultibase: 'z42twirSb1PULt5Sg6gjgNMsdiLycu6fbA83aX1vVb8e3ncP'
 }
 ```
 
