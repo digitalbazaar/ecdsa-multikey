@@ -1,6 +1,6 @@
 {
   "name": "@digitalbazaar/ecdsa-multikey",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Javascript library for generating and working with EcdsaMultikey key pairs.",
   "homepage": "https://github.com/digitalbazaar/ecdsa-multikey",
   "repository": {
