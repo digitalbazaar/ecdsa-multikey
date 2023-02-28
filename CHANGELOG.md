@@ -3,7 +3,7 @@
 ## 1.1.0 - 2023-XX-XX
 
 ### Changed
-- Assure public and secret multikey headers match.
+- Ensure public and secret multikey headers match.
 
 ## 1.0.0 - 2023-02-27
 
