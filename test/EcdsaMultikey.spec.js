@@ -3,7 +3,6 @@
  */
 import * as base58 from 'base58-universal';
 import chai from 'chai';
-import {base58btc} from 'multiformats/bases/base58';
 import {ECDSA_CURVE, MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
 import {CryptoKey} from '../lib/crypto.js';
 import * as EcdsaMultikey from '../lib/index.js';
@@ -15,7 +14,6 @@ import {
 } from './mock-data.js';
 const should = chai.should();
 const {expect} = chai;
-const {baseDecode, baseEncode} = base58btc;
 
 describe('EcdsaMultikey', () => {
   describe('module', () => {
@@ -173,7 +171,7 @@ describe('EcdsaMultikey', () => {
 
 function _ensurePublicKeyEncoding({keyPair, publicKeyMultibase}) {
   keyPair.publicKeyMultibase.startsWith(MULTIBASE_BASE58_HEADER).should.be.true;
-  const decodedPubkey = baseDecode(publicKeyMultibase);
-  const encodedPubkey = baseEncode(decodedPubkey);
+  const decodedPubkey = base58.decode(publicKeyMultibase);
+  const encodedPubkey = base58.encode(decodedPubkey);
   encodedPubkey.should.equal(keyPair.publicKeyMultibase);
 }
