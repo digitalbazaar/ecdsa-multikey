@@ -1,5 +1,10 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.2.0 - 2023-XX-XX
+
+### Changed
+- Assure public and secret multikey headers match.
+
 ## 1.0.0 - 2023-02-27
 
 ### Added
