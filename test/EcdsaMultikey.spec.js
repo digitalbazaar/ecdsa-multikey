@@ -3,8 +3,7 @@
  */
 import * as base58 from 'base58-universal';
 import chai from 'chai';
-import multibase from 'multibase';
-import multicodec from 'multicodec';
+import {base58btc} from 'multiformats/bases/base58';
 import {ECDSA_CURVE, MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
 import {CryptoKey} from '../lib/crypto.js';
 import * as EcdsaMultikey from '../lib/index.js';
@@ -16,6 +15,7 @@ import {
 } from './mock-data.js';
 const should = chai.should();
 const {expect} = chai;
+const {baseDecode, baseEncode} = base58btc;
 
 describe('EcdsaMultikey', () => {
   describe('module', () => {
@@ -173,12 +173,7 @@ describe('EcdsaMultikey', () => {
 
 function _ensurePublicKeyEncoding({keyPair, publicKeyMultibase}) {
   keyPair.publicKeyMultibase.startsWith(MULTIBASE_BASE58_HEADER).should.be.true;
-  const mcPubkeyBytes = multibase.decode(publicKeyMultibase);
-  const mcType = multicodec.getNameFromData(mcPubkeyBytes);
-  mcType.should.equal('p256-pub');
-  const pubkeyBytes =
-    multicodec.addPrefix('p256-pub', multicodec.rmPrefix(mcPubkeyBytes));
-  const encodedPubkey = MULTIBASE_BASE58_HEADER +
-    base58.encode(pubkeyBytes);
+  const decodedPubkey = baseDecode(publicKeyMultibase);
+  const encodedPubkey = baseEncode(decodedPubkey);
   encodedPubkey.should.equal(keyPair.publicKeyMultibase);
 }
