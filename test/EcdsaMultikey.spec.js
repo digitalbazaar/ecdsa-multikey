@@ -5,6 +5,7 @@ import * as base58 from 'base58-universal';
 import chai from 'chai';
 import {ECDSA_CURVE, MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
 import {CryptoKey} from '../lib/crypto.js';
+import {getNamedCurveFromPublicMultikey} from '../lib/helpers.js';
 import * as EcdsaMultikey from '../lib/index.js';
 import {
   mockKey,
@@ -171,7 +172,11 @@ describe('EcdsaMultikey', () => {
 
 function _ensurePublicKeyEncoding({keyPair, publicKeyMultibase}) {
   keyPair.publicKeyMultibase.startsWith(MULTIBASE_BASE58_HEADER).should.be.true;
-  const decodedPubkey = base58.decode(publicKeyMultibase);
-  const encodedPubkey = base58.encode(decodedPubkey);
+  const decodedPubkey = base58.decode(publicKeyMultibase.slice(1));
+  const ecdsaCurve = getNamedCurveFromPublicMultikey({
+    publicMultikey: decodedPubkey
+  });
+  ecdsaCurve.should.equal(ECDSA_CURVE.P256);
+  const encodedPubkey = MULTIBASE_BASE58_HEADER + base58.encode(decodedPubkey);
   encodedPubkey.should.equal(keyPair.publicKeyMultibase);
 }
