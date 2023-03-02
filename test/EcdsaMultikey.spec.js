@@ -24,6 +24,20 @@ describe('EcdsaMultikey', () => {
     });
   });
 
+  describe('algorithm', () => {
+    it('createSigner should export proper algorithm', async () => {
+      const keyPair = await EcdsaMultikey.from(mockKey);
+      const signer = keyPair.signer();
+      signer.algorithm.should.equal(ECDSA_CURVE.P256);
+    });
+
+    it('createVerifier should export proper algorithm', async () => {
+      const keyPair = await EcdsaMultikey.from(mockKey);
+      const verifier = keyPair.verifier();
+      verifier.algorithm.should.equal(ECDSA_CURVE.P256);
+    });
+  });
+
   describe('generate', () => {
     it('should generate a key pair', async () => {
       let keyPair;
