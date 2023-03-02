@@ -172,10 +172,7 @@ describe('EcdsaMultikey', () => {
 
 function _ensurePublicKeyEncoding({keyPair, publicKeyMultibase}) {
   keyPair.publicKeyMultibase.startsWith(MULTIBASE_BASE58_HEADER).should.be.true;
-  if(publicKeyMultibase[0] !== MULTIBASE_BASE58_HEADER) {
-    throw new Error(
-      '"publicKeyMultibase" must be a multibase-base58-encoded value.');
-  }
+  publicKeyMultibase.startsWith(MULTIBASE_BASE58_HEADER).should.be.true;
   const decodedPubkey = base58.decode(publicKeyMultibase.slice(1));
   const ecdsaCurve = getNamedCurveFromPublicMultikey({
     publicMultikey: decodedPubkey
