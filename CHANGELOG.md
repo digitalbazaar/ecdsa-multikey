@@ -5,7 +5,7 @@
 ### Changed
 - Change exported algorithm from "ECDSA" to curve name.
 
-## 1.1.0 - 2023-XX-XX
+## 1.1.0 - 2023-03-02
 
 ### Changed
 - Ensure public and secret multikey headers match.
