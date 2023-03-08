@@ -4,9 +4,10 @@
 import * as base58 from 'base58-universal';
 import chai from 'chai';
 import {ECDSA_CURVE, MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
-import {CryptoKey} from '../lib/crypto.js';
+import {CryptoKey, webcrypto} from '../lib/crypto.js';
 import {getNamedCurveFromPublicMultikey} from '../lib/helpers.js';
 import * as EcdsaMultikey from '../lib/index.js';
+import {exportKeyPair} from '../lib/serialize.js';
 import {
   mockKey,
   mockKeyEcdsaSecp256,
@@ -102,6 +103,23 @@ describe('EcdsaMultikey', () => {
       expect(keyPairExported).to.have.property('publicKeyMultibase');
       expect(keyPairExported).to.have.property('id', '4e0db4260c87cc200df3');
       expect(keyPairExported).to.have.property('type', 'Multikey');
+    });
+
+    it('should only export secret key if available', async () => {
+      const algorithm = {name: 'ECDSA', namedCurve: 'P-256'};
+      const keyPair = await webcrypto.subtle.generateKey(
+        algorithm, true, ['sign', 'verify']
+      );
+      delete keyPair.privateKey;
+
+      const keyPairExported = await exportKeyPair({
+        keyPair,
+        publicKey: true,
+        secretKey: true,
+        includeContext: true
+      });
+
+      expect(keyPairExported).not.to.have.property('secretKeyMultibase');
     });
   });
 
