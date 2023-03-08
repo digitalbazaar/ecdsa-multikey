@@ -4,6 +4,7 @@
 
 ### Changed
 - Fix data format alignment issues with ecdsa-2019-cryptosuite.
+- Use constant strings in tests.
 
 ## 1.1.0 - 2023-03-06
 
