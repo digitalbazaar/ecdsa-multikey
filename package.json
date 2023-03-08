@@ -17,10 +17,8 @@
     "lib/**/*.js"
   ],
   "dependencies": {
-    "arraybuffer-to-buffer": "^0.0.7",
     "base58-universal": "^2.0.0",
-    "base64url-universal": "^2.0.0",
-    "buffer": "^6.0.3"
+    "base64url-universal": "^2.0.0"
   },
   "devDependencies": {
     "c8": "^7.11.3",

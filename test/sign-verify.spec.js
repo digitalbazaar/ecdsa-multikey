@@ -35,18 +35,17 @@ describe('sign and verify', () => {
     const data = stringToUint8Array('test 1234');
     const signature = await signer.sign({data});
 
-    // check some expected properties of a Buffer object
+    // check some expected properties of a Uint8Array object
+    expect(signature).to.have.property('BYTES_PER_ELEMENT');
     expect(signature).to.have.property('buffer');
     expect(signature).to.have.property('byteLength');
     expect(signature).to.have.property('byteOffset');
-    expect(signature).to.have.property('compare');
-    expect(signature).to.have.property('copy');
     expect(signature).to.have.property('entries');
-    expect(signature).to.have.property('equals');
     expect(signature).to.have.property('fill');
+    expect(signature).to.have.property('find');
     expect(signature).to.have.property('includes');
     expect(signature).to.have.property('slice');
-    expect(signature).to.have.property('write');
+    expect(signature).to.have.property('sort');
   });
 
   it('fails if signing data is changed', async () => {
