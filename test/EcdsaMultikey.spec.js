@@ -3,7 +3,6 @@
  */
 import * as base58 from 'base58-universal';
 import chai from 'chai';
-import {ECDSA_CURVE, MULTIBASE_BASE58_HEADER} from '../lib/constants.js';
 import {CryptoKey, webcrypto} from '../lib/crypto.js';
 import {getNamedCurveFromPublicMultikey} from '../lib/helpers.js';
 import * as EcdsaMultikey from '../lib/index.js';
@@ -29,13 +28,13 @@ describe('EcdsaMultikey', () => {
     it('createSigner should export proper algorithm', async () => {
       const keyPair = await EcdsaMultikey.from(mockKey);
       const signer = keyPair.signer();
-      signer.algorithm.should.equal(ECDSA_CURVE.P256);
+      signer.algorithm.should.equal('P-256');
     });
 
     it('createVerifier should export proper algorithm', async () => {
       const keyPair = await EcdsaMultikey.from(mockKey);
       const verifier = keyPair.verifier();
-      verifier.algorithm.should.equal(ECDSA_CURVE.P256);
+      verifier.algorithm.should.equal('P-256');
     });
   });
 
@@ -44,7 +43,7 @@ describe('EcdsaMultikey', () => {
       let keyPair;
       let error;
       try {
-        keyPair = await EcdsaMultikey.generate({curve: ECDSA_CURVE.P256});
+        keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
       } catch(e) {
         error = e;
       }
@@ -73,7 +72,7 @@ describe('EcdsaMultikey', () => {
       const keyPair = await EcdsaMultikey.generate({
         id: '4e0db4260c87cc200df3',
         controller: 'did:example:1234',
-        curve: ECDSA_CURVE.P256
+        curve: 'P-256'
       });
       const keyPairExported = await keyPair.export({
         publicKey: true, secretKey: true
@@ -95,7 +94,7 @@ describe('EcdsaMultikey', () => {
     it('should only export public key if specified', async () => {
       const keyPair = await EcdsaMultikey.generate({
         id: '4e0db4260c87cc200df3',
-        curve: ECDSA_CURVE.P256
+        curve: 'P-256'
       });
       const keyPairExported = await keyPair.export({publicKey: true});
 
@@ -150,7 +149,7 @@ describe('EcdsaMultikey', () => {
     it('should round-trip load exported keys', async () => {
       const keyPair = await EcdsaMultikey.generate({
         id: '4e0db4260c87cc200df3',
-        curve: ECDSA_CURVE.P256
+        curve: 'P-256'
       });
       const keyPairExported = await keyPair.export({
         publicKey: true, secretKey: true
@@ -203,13 +202,13 @@ describe('EcdsaMultikey', () => {
 });
 
 function _ensurePublicKeyEncoding({keyPair, publicKeyMultibase}) {
-  keyPair.publicKeyMultibase.startsWith(MULTIBASE_BASE58_HEADER).should.be.true;
-  publicKeyMultibase.startsWith(MULTIBASE_BASE58_HEADER).should.be.true;
+  keyPair.publicKeyMultibase.startsWith('z').should.be.true;
+  publicKeyMultibase.startsWith('z').should.be.true;
   const decodedPubkey = base58.decode(publicKeyMultibase.slice(1));
   const ecdsaCurve = getNamedCurveFromPublicMultikey({
     publicMultikey: decodedPubkey
   });
-  ecdsaCurve.should.equal(ECDSA_CURVE.P256);
-  const encodedPubkey = MULTIBASE_BASE58_HEADER + base58.encode(decodedPubkey);
+  ecdsaCurve.should.equal('P-256');
+  const encodedPubkey = 'z' + base58.encode(decodedPubkey);
   encodedPubkey.should.equal(keyPair.publicKeyMultibase);
 }
