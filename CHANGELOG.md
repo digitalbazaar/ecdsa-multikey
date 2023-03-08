@@ -1,5 +1,10 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.2.0 - 2023-xx-xx
+
+### Changed
+- Fix data format alignment issues with ecdsa-2019-cryptosuite.
+
 ## 1.1.0 - 2023-03-06
 
 ### Changed
