@@ -1,8 +1,8 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
-## 1.2.0 - 2023-xx-xx
+## 1.1.1 - 2023-03-11
 
-### Changed
+### Fixed
 - Fix data format alignment issues with ecdsa-2019-cryptosuite.
 - Use constant strings in tests.
 
