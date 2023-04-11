@@ -3,7 +3,7 @@
 ## 1.1.2 - 2023-TBD
 
 ### Fixed
-- Fix `importKeyPair()` to take a `type` param.
+- Fix `importKeyPair` to set `keyPair.type` to `Multikey`.
 
 ## 1.1.1 - 2023-03-11
 
