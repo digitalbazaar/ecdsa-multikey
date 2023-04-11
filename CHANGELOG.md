@@ -1,5 +1,10 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.1.2 - 2023-TBD
+
+### Fixed
+- Fix `importKeyPair()` to take a `type` param.
+
 ## 1.1.1 - 2023-03-11
 
 ### Fixed
