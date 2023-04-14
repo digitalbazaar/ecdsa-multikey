@@ -1,5 +1,10 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.1.2 - 2023-TBD
+
+### Fixed
+- Update `.from()` method to not modify key input.
+
 ## 1.1.1 - 2023-03-11
 
 ### Fixed
