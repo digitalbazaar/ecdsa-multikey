@@ -1,6 +1,6 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
-## 1.1.3 - 2023-05-xx
+## 1.1.3 - 2023-05-19
 
 ### Fixed
 - Support Node.js 20.x.
