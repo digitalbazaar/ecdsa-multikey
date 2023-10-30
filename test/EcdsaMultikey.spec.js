@@ -27,16 +27,41 @@ describe('EcdsaMultikey', () => {
   });
 
   describe('algorithm', () => {
-    it('createSigner should export proper algorithm', async () => {
+    it('signer() instance should export proper algorithm', async () => {
       const keyPair = await EcdsaMultikey.from(mockKey);
       const signer = keyPair.signer();
       signer.algorithm.should.equal('P-256');
     });
 
-    it('createVerifier should export proper algorithm', async () => {
+    it('verifier() instance should export proper algorithm', async () => {
       const keyPair = await EcdsaMultikey.from(mockKey);
       const verifier = keyPair.verifier();
       verifier.algorithm.should.equal('P-256');
+    });
+
+    it('deriveSecret() should not be supported by default', async () => {
+      const keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
+
+      let err;
+      try {
+        await keyPair.deriveSecret({remotePublicKey: keyPair});
+      } catch(e) {
+        err = e;
+      }
+      should.exist(err);
+      err.name.should.equal('NotSupportedError');
+    });
+
+    it('deriveSecret() should produce a shared secret', async () => {
+      const keyPair1 = await EcdsaMultikey.generate(
+        {curve: 'P-256', keyAgreement: true});
+      const keyPair2 = await EcdsaMultikey.generate(
+        {curve: 'P-256', keyAgreement: true});
+
+      const secret1 = await keyPair1.deriveSecret({remotePublicKey: keyPair2});
+      const secret2 = await keyPair2.deriveSecret({remotePublicKey: keyPair1});
+
+      expect(secret1).to.deep.eql(secret2);
     });
   });
 
