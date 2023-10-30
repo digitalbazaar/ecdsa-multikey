@@ -1,5 +1,17 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.3.0 - 2023-10-dd
+
+### Added
+- Add `keyAgreement` option to `generate()` to generate ECDH keys instead of
+  ECDSA keys. This module needs a better name than `ecdsa-multikey` as it also
+  supports key agreement keys, but only for keys based on curves that are also
+  compatible with ECDSA. Note that a key should only be used for ECDSA or ECDH
+  (key agreement), not both, so calling this module `ecdsa-multikey` is a bit
+  misleading as you can also generate a key that is to only be used for key
+  agreement.
+- Add `deriveSecret()` API for `keyAgreement` enabled keys.
+
 ## 1.2.1 - 2023-10-30
 
 ### Fixed
