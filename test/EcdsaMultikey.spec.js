@@ -18,9 +18,11 @@ const {expect} = chai;
 
 describe('EcdsaMultikey', () => {
   describe('module', () => {
-    it('should have "generate" and "from" properties', async () => {
+    it('should have proper exports', async () => {
       expect(EcdsaMultikey).to.have.property('generate');
       expect(EcdsaMultikey).to.have.property('from');
+      expect(EcdsaMultikey).to.have.property('fromJwk');
+      expect(EcdsaMultikey).to.have.property('toJwk');
     });
   });
 
@@ -158,6 +160,34 @@ describe('EcdsaMultikey', () => {
 
       expect(await keyPairImported.export({publicKey: true, secretKey: true}))
         .to.eql(keyPairExported);
+    });
+  });
+
+  describe('fromJwk/toJwk', () => {
+    it('should round-trip secret JWKs', async () => {
+      const keyPair = await EcdsaMultikey.generate({
+        id: '4e0db4260c87cc200df3',
+        curve: 'P-256'
+      });
+      const jwk1 = await EcdsaMultikey.toJwk({keyPair, secretKey: true});
+      should.exist(jwk1.d);
+      const keyPairImported = await EcdsaMultikey.fromJwk(
+        {jwk: jwk1, secretKey: true});
+      const jwk2 = await EcdsaMultikey.toJwk(
+        {keyPair: keyPairImported, secretKey: true});
+      expect(jwk1).to.eql(jwk2);
+    });
+
+    it('should round-trip public JWKs', async () => {
+      const keyPair = await EcdsaMultikey.generate({
+        id: '4e0db4260c87cc200df3',
+        curve: 'P-256'
+      });
+      const jwk1 = await EcdsaMultikey.toJwk({keyPair});
+      should.not.exist(jwk1.d);
+      const keyPairImported = await EcdsaMultikey.fromJwk({jwk: jwk1});
+      const jwk2 = await EcdsaMultikey.toJwk({keyPair: keyPairImported});
+      expect(jwk1).to.eql(jwk2);
     });
   });
 

@@ -1,5 +1,10 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.2.0 - 2023-10-dd
+
+### Added
+- Add `fromJwk()` and `toJwk()` for importing / exporting key pairs using JWK.
+
 ## 1.1.3 - 2023-05-19
 
 ### Fixed
