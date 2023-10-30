@@ -1,5 +1,10 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.2.1 - 2023-10-dd
+
+### Fixed
+- Do not include `ext` or `key_ops` in output JWK.
+
 ## 1.2.0 - 2023-10-30
 
 ### Added
