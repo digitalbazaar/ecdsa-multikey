@@ -1,6 +1,6 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
-## 1.3.0 - 2023-10-dd
+## 1.3.0 - 2023-10-31
 
 ### Added
 - Add `keyAgreement` option to `generate()` to generate ECDH keys instead of
