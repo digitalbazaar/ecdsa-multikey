@@ -2,10 +2,10 @@
  * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
  */
 import * as base58 from 'base58-universal';
+import * as EcdsaMultikey from '../lib/index.js';
 import chai from 'chai';
 import {CryptoKey, webcrypto} from '../lib/crypto.js';
 import {getNamedCurveFromPublicMultikey} from '../lib/helpers.js';
-import * as EcdsaMultikey from '../lib/index.js';
 import {exportKeyPair} from '../lib/serialize.js';
 import {
   mockKey,
@@ -134,8 +134,7 @@ describe('EcdsaMultikey', () => {
     it('should only export secret key if available', async () => {
       const algorithm = {name: 'ECDSA', namedCurve: 'P-256'};
       const keyPair = await webcrypto.subtle.generateKey(
-        algorithm, true, ['sign', 'verify']
-      );
+        algorithm, true, ['sign', 'verify']);
       delete keyPair.privateKey;
 
       const keyPairExported = await exportKeyPair({
@@ -146,6 +145,22 @@ describe('EcdsaMultikey', () => {
       });
 
       expect(keyPairExported).not.to.have.property('secretKeyMultibase');
+    });
+
+    it('should export raw public key', async () => {
+      const keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
+      const expectedPublicKey = base58.decode(
+        keyPair.publicKeyMultibase.slice(1)).slice(2);
+      const publicKey = await keyPair.exportRawPublicKey();
+      expect(expectedPublicKey).to.deep.equal(publicKey);
+    });
+
+    it('should export raw secret key', async () => {
+      const keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
+      const expectedSecretKey = base58.decode(
+        keyPair.secretKeyMultibase.slice(1)).slice(2);
+      const secretKey = await keyPair.exportRawSecretKey();
+      expect(expectedSecretKey).to.deep.equal(secretKey);
     });
   });
 

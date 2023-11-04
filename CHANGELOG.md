@@ -1,5 +1,10 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.4.0 - 2023-11-dd
+
+### Added
+- Add `exportRawSecretKey()` and `exportRawPublicKey()` to key pair interface.
+
 ## 1.3.0 - 2023-10-31
 
 ### Added
