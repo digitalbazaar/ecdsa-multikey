@@ -151,7 +151,7 @@ describe('EcdsaMultikey', () => {
       const keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
       const expectedPublicKey = base58.decode(
         keyPair.publicKeyMultibase.slice(1)).slice(2);
-      const publicKey = await keyPair.exportRawPublicKey();
+      const {publicKey} = await keyPair.export({publicKey: true, raw: true});
       expect(expectedPublicKey).to.deep.equal(publicKey);
     });
 
@@ -159,7 +159,7 @@ describe('EcdsaMultikey', () => {
       const keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
       const expectedSecretKey = base58.decode(
         keyPair.secretKeyMultibase.slice(1)).slice(2);
-      const secretKey = await keyPair.exportRawSecretKey();
+      const {secretKey} = await keyPair.export({secretKey: true, raw: true});
       expect(expectedSecretKey).to.deep.equal(secretKey);
     });
   });

@@ -3,7 +3,10 @@
 ## 1.4.0 - 2023-11-dd
 
 ### Added
-- Add `exportRawSecretKey()` and `exportRawPublicKey()` to key pair interface.
+- Add `raw` option to key pair `export()`. Based on the requested public/secret
+  key, the output will include the raw bytes for the public/secret key using
+  the properties `publicKey` and/or `secretKey`, respectively. The public key
+  will be output using the compressed format.
 
 ## 1.3.0 - 2023-10-31
 
