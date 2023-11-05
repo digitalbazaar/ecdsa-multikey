@@ -1,5 +1,13 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.5.0 - 2023-11-dd
+
+### Added
+- Rename `remotePublicKey` param to `publicKey` for `deriveSecret()` to get
+  better compatibility with WebKMS Client KeyAgreementKey interface. The
+  param can still be passed as `remotePublicKey` but this is considered
+  deprecated.
+
 ## 1.4.0 - 2023-11-05
 
 ### Added

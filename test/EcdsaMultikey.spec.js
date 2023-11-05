@@ -44,7 +44,7 @@ describe('EcdsaMultikey', () => {
 
       let err;
       try {
-        await keyPair.deriveSecret({remotePublicKey: keyPair});
+        await keyPair.deriveSecret({publicKey: keyPair});
       } catch(e) {
         err = e;
       }
@@ -58,8 +58,8 @@ describe('EcdsaMultikey', () => {
       const keyPair2 = await EcdsaMultikey.generate(
         {curve: 'P-256', keyAgreement: true});
 
-      const secret1 = await keyPair1.deriveSecret({remotePublicKey: keyPair2});
-      const secret2 = await keyPair2.deriveSecret({remotePublicKey: keyPair1});
+      const secret1 = await keyPair1.deriveSecret({publicKey: keyPair2});
+      const secret2 = await keyPair2.deriveSecret({publicKey: keyPair1});
 
       expect(secret1).to.deep.eql(secret2);
     });
