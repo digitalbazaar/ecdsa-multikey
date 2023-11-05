@@ -1,6 +1,6 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
-## 1.5.0 - 2023-11-dd
+## 1.5.0 - 2023-11-05
 
 ### Added
 - Rename `remotePublicKey` param to `publicKey` for `deriveSecret()` to get
