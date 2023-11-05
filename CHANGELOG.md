@@ -1,6 +1,6 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
-## 1.4.0 - 2023-11-dd
+## 1.4.0 - 2023-11-05
 
 ### Added
 - Add `raw` option to key pair `export()`. Based on the requested public/secret
