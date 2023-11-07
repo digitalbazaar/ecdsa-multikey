@@ -1,5 +1,13 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.6.0 - 2023-11-dd
+
+### Added
+- Add `fromRaw()` to import a key pair from a named `curve`, `secretKey`,
+  and `publicKey`.
+- Reformat `keyAgreement` param in `from()` to `options` to enable named
+  usage (`{keyAgreement: true|false}`) for better API.
+
 ## 1.5.0 - 2023-11-05
 
 ### Added
