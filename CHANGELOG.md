@@ -1,6 +1,6 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
-## 1.6.0 - 2023-11-dd
+## 1.6.0 - 2023-11-07
 
 ### Added
 - Add `fromRaw()` to import a key pair from a named `curve`, `secretKey`,
