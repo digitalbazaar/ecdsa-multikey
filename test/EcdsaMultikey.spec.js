@@ -267,9 +267,31 @@ describe('EcdsaMultikey', () => {
         {curve, secretKey, publicKey});
 
       // then re-export to confirm
-      const {secretKey: secreyKey2} = await imported.export(
+      const {secretKey: secretKey2} = await imported.export(
         {secretKey: true, raw: true});
-      expect(expectedSecretKey).to.deep.equal(secreyKey2);
+      expect(expectedSecretKey).to.deep.equal(secretKey2);
+    });
+
+    it('should import raw secret key for key agreement', async () => {
+      const curve = 'P-256';
+      const keyPair = await EcdsaMultikey.generate({curve, keyAgreement: true});
+
+      // first export
+      const expectedSecretKey = base58.decode(
+        keyPair.secretKeyMultibase.slice(1)).slice(2);
+      const {secretKey, publicKey} = await keyPair.export(
+        {secretKey: true, raw: true});
+      expect(expectedSecretKey).to.deep.equal(secretKey);
+
+      // then import
+      const imported = await EcdsaMultikey.fromRaw(
+        {curve, secretKey, publicKey, keyAgreement: true});
+      expect(imported.keyAgreement).to.equal(true);
+
+      // then re-export to confirm
+      const {secretKey: secretKey2} = await imported.export(
+        {secretKey: true, raw: true});
+      expect(expectedSecretKey).to.deep.equal(secretKey2);
     });
   });
 
