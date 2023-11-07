@@ -231,6 +231,48 @@ describe('EcdsaMultikey', () => {
     });
   });
 
+  describe('fromRaw', () => {
+    it('should import raw public key', async () => {
+      const curve = 'P-256';
+      const keyPair = await EcdsaMultikey.generate({curve});
+
+      // first export
+      const expectedPublicKey = base58.decode(
+        keyPair.publicKeyMultibase.slice(1)).slice(2);
+      const {publicKey} = await keyPair.export({publicKey: true, raw: true});
+      expect(expectedPublicKey).to.deep.equal(publicKey);
+
+      // then import
+      const imported = await EcdsaMultikey.fromRaw({curve, publicKey});
+
+      // then re-export to confirm
+      const {publicKey: publicKey2} = await imported.export(
+        {publicKey: true, raw: true});
+      expect(expectedPublicKey).to.deep.equal(publicKey2);
+    });
+
+    it('should import raw secret key', async () => {
+      const curve = 'P-256';
+      const keyPair = await EcdsaMultikey.generate({curve});
+
+      // first export
+      const expectedSecretKey = base58.decode(
+        keyPair.secretKeyMultibase.slice(1)).slice(2);
+      const {secretKey, publicKey} = await keyPair.export(
+        {secretKey: true, raw: true});
+      expect(expectedSecretKey).to.deep.equal(secretKey);
+
+      // then import
+      const imported = await EcdsaMultikey.fromRaw(
+        {curve, secretKey, publicKey});
+
+      // then re-export to confirm
+      const {secretKey: secreyKey2} = await imported.export(
+        {secretKey: true, raw: true});
+      expect(expectedSecretKey).to.deep.equal(secreyKey2);
+    });
+  });
+
   describe('Backwards compat with EcdsaSecp256r1VerificationKey2019', () => {
     it('Multikey should import properly', async () => {
       const keyPair = await EcdsaMultikey.from(mockKeyEcdsaSecp256);
