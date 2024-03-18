@@ -1,5 +1,10 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.7.0 - 2024-mm-dd
+
+### Added
+- Add conversion from `publicKeyJwk` feature via `from()`.
+
 ## 1.6.0 - 2023-11-07
 
 ### Added
