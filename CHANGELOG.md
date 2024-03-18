@@ -5,6 +5,9 @@
 ### Added
 - Add conversion from `publicKeyJwk` feature via `from()`.
 
+### Fixed
+- Allow `@context` array values in multikeys.
+
 ## 1.6.0 - 2023-11-07
 
 ### Added

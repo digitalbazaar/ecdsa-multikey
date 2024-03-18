@@ -202,6 +202,23 @@ describe('EcdsaMultikey', () => {
         .to.eql(keyPairExported);
     });
 
+    it('should import with `@context` array', async () => {
+      const keyPair = await EcdsaMultikey.generate({
+        id: '4e0db4260c87cc200df3',
+        curve: 'P-256'
+      });
+      const keyPairExported = await keyPair.export({
+        publicKey: true, secretKey: true
+      });
+      const keyPairImported = await EcdsaMultikey.from({
+        ...keyPairExported,
+        '@context': [{}, keyPairExported['@context']]
+      });
+
+      expect(await keyPairImported.export({publicKey: true, secretKey: true}))
+        .to.eql(keyPairExported);
+    });
+
     it('should load `publicKeyJwk`', async () => {
       const keyPair = await EcdsaMultikey.generate({
         id: '4e0db4260c87cc200df3',
