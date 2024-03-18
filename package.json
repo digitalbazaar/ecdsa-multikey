@@ -41,7 +41,7 @@
     "webpack": "^5.72.1"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "scripts": {
     "test": "npm run test-node",

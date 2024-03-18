@@ -5,6 +5,9 @@
 ### Added
 - Add conversion from `publicKeyJwk` feature via `from()`.
 
+### Changed
+- Expect >= node 18 via `package.json`.
+
 ### Fixed
 - Allow `@context` array values in multikeys.
 
