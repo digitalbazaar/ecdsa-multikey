@@ -33,4 +33,4 @@ export const keyTypes = new Map([
   ['P-256', mockKeyEcdsaSecp256],
   ['P-384', mockKeyEcdsaSecp384],
   ['P-521', mockKeyEcdsaSecp521]
-])
+]);
