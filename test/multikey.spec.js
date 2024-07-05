@@ -6,6 +6,7 @@ import {multikeys} from './mock-data.js';
 import {
   testAlgorithm,
   testExport,
+  testFrom,
   testGenerate,
   testSignVerify
 } from './assertions.js';
@@ -29,6 +30,9 @@ describe('ecdsa-multikey', function() {
       });
       describe('sign and verify', function() {
         testSignVerify({id, serializedKeyPair, keyType});
+      });
+      describe('from', function() {
+        testFrom({keyType, id, serializedKeyPair});
       });
     });
   }

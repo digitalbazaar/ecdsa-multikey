@@ -8,6 +8,7 @@ import {stringToUint8Array} from './text-encoder.js';
 import {CryptoKey} from '../lib/crypto.js';
 import {webcrypto} from '../lib/crypto.js';
 import {exportKeyPair} from '../lib/serialize.js';
+import {getNamedCurveFromPublicMultikey} from '../lib/helpers.js';
 
 chai.should();
 const {expect} = chai;
@@ -167,4 +168,25 @@ export function testExport({curve}) {
     const {secretKey} = await keyPair.export({secretKey: true, raw: true});
     expect(expectedSecretKey).to.deep.equal(secretKey);
   });
+}
+
+export function testFrom({serializedKeyPair, id, keyType}) {
+  it('should auto-set key.id based on controller', async () => {
+    const {publicKeyMultibase} = serializedKeyPair;
+    const keyPair = await EcdsaMultikey.from(serializedKeyPair);
+    _ensurePublicKeyEncoding({keyPair, keyType, publicKeyMultibase});
+    expect(keyPair.id).to.equal(id);
+  });
+}
+
+function _ensurePublicKeyEncoding({keyPair, publicKeyMultibase, keyType}) {
+  keyPair.publicKeyMultibase.startsWith('z').should.be.true;
+  publicKeyMultibase.startsWith('z').should.be.true;
+  const decodedPubkey = base58.decode(publicKeyMultibase.slice(1));
+  const ecdsaCurve = getNamedCurveFromPublicMultikey({
+    publicMultikey: decodedPubkey
+  });
+  ecdsaCurve.should.equal(keyType);
+  const encodedPubkey = 'z' + base58.encode(decodedPubkey);
+  encodedPubkey.should.equal(keyPair.publicKeyMultibase);
 }
