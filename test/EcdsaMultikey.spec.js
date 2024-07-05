@@ -51,7 +51,6 @@ describe('EcdsaMultikey', () => {
   });
 
   describe('from', () => {
-
     it('should error if publicKeyMultibase property is missing', async () => {
       let error;
       try {
@@ -62,55 +61,6 @@ describe('EcdsaMultikey', () => {
       expect(error).to.be.an.instanceof(TypeError);
       expect(error.message)
         .to.equal('The "publicKeyMultibase" property is required.');
-    });
-
-    it('should round-trip load exported keys', async () => {
-      const keyPair = await EcdsaMultikey.generate({
-        id: '4e0db4260c87cc200df3',
-        curve: 'P-256'
-      });
-      const keyPairExported = await keyPair.export({
-        publicKey: true, secretKey: true
-      });
-      const keyPairImported = await EcdsaMultikey.from(keyPairExported);
-
-      expect(await keyPairImported.export({publicKey: true, secretKey: true}))
-        .to.eql(keyPairExported);
-    });
-
-    it('should import with `@context` array', async () => {
-      const keyPair = await EcdsaMultikey.generate({
-        id: '4e0db4260c87cc200df3',
-        curve: 'P-256'
-      });
-      const keyPairExported = await keyPair.export({
-        publicKey: true, secretKey: true
-      });
-      const keyPairImported = await EcdsaMultikey.from({
-        ...keyPairExported,
-        '@context': [{}, keyPairExported['@context']]
-      });
-
-      expect(await keyPairImported.export({publicKey: true, secretKey: true}))
-        .to.eql(keyPairExported);
-    });
-
-    it('should load `publicKeyJwk`', async () => {
-      const keyPair = await EcdsaMultikey.generate({
-        id: '4e0db4260c87cc200df3',
-        curve: 'P-256'
-      });
-      const jwk1 = await EcdsaMultikey.toJwk({keyPair});
-      should.not.exist(jwk1.d);
-      const keyPairImported1 = await EcdsaMultikey.from({publicKeyJwk: jwk1});
-      const keyPairImported2 = await EcdsaMultikey.from({
-        type: 'JsonWebKey',
-        publicKeyJwk: jwk1
-      });
-      const jwk2 = await EcdsaMultikey.toJwk({keyPair: keyPairImported1});
-      const jwk3 = await EcdsaMultikey.toJwk({keyPair: keyPairImported2});
-      expect(jwk1).to.eql(jwk2);
-      expect(jwk1).to.eql(jwk3);
     });
   });
 

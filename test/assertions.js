@@ -10,7 +10,6 @@ import {webcrypto} from '../lib/crypto.js';
 import {exportKeyPair} from '../lib/serialize.js';
 import {getNamedCurveFromPublicMultikey} from '../lib/helpers.js';
 
-chai.should();
 const {expect} = chai;
 
 export function testSignVerify({id, serializedKeyPair}) {
@@ -176,6 +175,53 @@ export function testFrom({serializedKeyPair, id, keyType}) {
     const keyPair = await EcdsaMultikey.from(serializedKeyPair);
     _ensurePublicKeyEncoding({keyPair, keyType, publicKeyMultibase});
     expect(keyPair.id).to.equal(id);
+  });
+  it('should round-trip load exported keys', async () => {
+    const keyPair = await EcdsaMultikey.generate({
+      id: '4e0db4260c87cc200df3',
+      curve: keyType
+    });
+    const keyPairExported = await keyPair.export({
+      publicKey: true, secretKey: true
+    });
+    const keyPairImported = await EcdsaMultikey.from(keyPairExported);
+
+    expect(await keyPairImported.export({publicKey: true, secretKey: true}))
+      .to.eql(keyPairExported);
+  });
+
+  it('should import with `@context` array', async () => {
+    const keyPair = await EcdsaMultikey.generate({
+      id: '4e0db4260c87cc200df3',
+      curve: keyType
+    });
+    const keyPairExported = await keyPair.export({
+      publicKey: true, secretKey: true
+    });
+    const keyPairImported = await EcdsaMultikey.from({
+      ...keyPairExported,
+      '@context': [{}, keyPairExported['@context']]
+    });
+
+    expect(await keyPairImported.export({publicKey: true, secretKey: true}))
+      .to.eql(keyPairExported);
+  });
+  it('should load `publicKeyJwk`', async () => {
+    const keyPair = await EcdsaMultikey.generate({
+      id: '4e0db4260c87cc200df3',
+      curve: keyType
+    });
+    const jwk1 = await EcdsaMultikey.toJwk({keyPair});
+    expect(jwk1.d).to.not.exist;
+    const keyPairImported1 = await EcdsaMultikey.from({publicKeyJwk: jwk1});
+    const keyPairImported2 = await EcdsaMultikey.from({
+      type: 'JsonWebKey',
+      publicKeyJwk: jwk1
+    });
+    const jwk2 = await EcdsaMultikey.toJwk({keyPair: keyPairImported1});
+    const jwk3 = await EcdsaMultikey.toJwk({keyPair: keyPairImported2});
+    expect(jwk1).to.eql(jwk2);
+    expect(jwk1).to.eql(jwk3);
   });
 }
 
