@@ -246,7 +246,7 @@ export function testJWK({curve}) {
       curve
     });
     const jwk1 = await EcdsaMultikey.toJwk({keyPair});
-    expect(jwk1.d).to.not.exist
+    expect(jwk1.d).to.not.exist;
     const keyPairImported = await EcdsaMultikey.fromJwk({jwk: jwk1});
     const jwk2 = await EcdsaMultikey.toJwk({keyPair: keyPairImported});
     expect(jwk1).to.eql(jwk2);
