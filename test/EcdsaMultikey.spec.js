@@ -4,15 +4,18 @@
 import * as base58 from 'base58-universal';
 import * as EcdsaMultikey from '../lib/index.js';
 import chai from 'chai';
-import {CryptoKey, webcrypto} from '../lib/crypto.js';
+import {webcrypto} from '../lib/crypto.js';
 import {getNamedCurveFromPublicMultikey} from '../lib/helpers.js';
 import {exportKeyPair} from '../lib/serialize.js';
 import {
   mockKey,
   mockKeyEcdsaSecp256,
   mockKeyEcdsaSecp384,
-  mockKeyEcdsaSecp521
+  mockKeyEcdsaSecp521,
+  keyTypes
 } from './mock-data.js';
+import {testAlgorithm, testGenerate} from './assertions.js';
+
 const should = chai.should();
 const {expect} = chai;
 
@@ -27,18 +30,11 @@ describe('EcdsaMultikey', () => {
   });
 
   describe('algorithm', () => {
-    it('signer() instance should export proper algorithm', async () => {
-      const keyPair = await EcdsaMultikey.from(mockKey);
-      const signer = keyPair.signer();
-      signer.algorithm.should.equal('P-256');
-    });
-
-    it('verifier() instance should export proper algorithm', async () => {
-      const keyPair = await EcdsaMultikey.from(mockKey);
-      const verifier = keyPair.verifier();
-      verifier.algorithm.should.equal('P-256');
-    });
-
+    for(const [keyType, {serializedKeyPair}] of keyTypes) {
+      describe(keyType, function() {
+        testAlgorithm({keyType, serializedKeyPair});
+      });
+    }
     it('deriveSecret() should not be supported by default', async () => {
       const keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
 
@@ -65,33 +61,12 @@ describe('EcdsaMultikey', () => {
     });
   });
 
-  describe('generate', () => {
-    it('should generate a key pair', async () => {
-      let keyPair;
-      let error;
-      try {
-        keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
-      } catch(e) {
-        error = e;
-      }
-      should.not.exist(error);
-
-      expect(keyPair).to.have.property('publicKeyMultibase');
-      expect(keyPair).to.have.property('secretKeyMultibase');
-      expect(keyPair).to.have.property('publicKey');
-      expect(keyPair?.publicKey instanceof CryptoKey).to.be.true;
-      expect(keyPair).to.have.property('secretKey');
-      expect(keyPair?.secretKey instanceof CryptoKey).to.be.true;
-      expect(keyPair).to.have.property('export');
-      expect(keyPair).to.have.property('signer');
-      expect(keyPair).to.have.property('verifier');
-      const secretKeyBytes = base58
-        .decode(keyPair.secretKeyMultibase.slice(1));
-      const publicKeyBytes = base58
-        .decode(keyPair.publicKeyMultibase.slice(1));
-      secretKeyBytes.length.should.equal(34);
-      publicKeyBytes.length.should.equal(35);
-    });
+  describe('generate', function() {
+    for(const [keyType, {props}] of keyTypes) {
+      describe(keyType, function() {
+        testGenerate({curve: keyType, ...props});
+      });
+    }
   });
 
   describe('export', () => {

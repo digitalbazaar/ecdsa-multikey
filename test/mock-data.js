@@ -33,8 +33,31 @@ export const mockKeyEcdsaSecp521 = {
     'K6vuzCXSp1hwwvgGGEnQS82ZeKaPcFDrvhWhaq4767Am'
 };
 
+const getKeyId = ({controller, publicKeyMultibase}) =>
+  `${controller}#${publicKeyMultibase}`;
+
 export const keyTypes = new Map([
-  ['P-256', mockKeyEcdsaSecp256],
-  ['P-384', mockKeyEcdsaSecp384],
-  ['P-521', mockKeyEcdsaSecp521]
+  ['P-256', {
+    id: getKeyId(mockKeyEcdsaSecp256),
+    serializedKeyPair: mockKeyEcdsaSecp256,
+    props: {
+
+    }
+  }],
+  ['P-384', {
+    id: getKeyId(mockKeyEcdsaSecp384),
+    serializedKeyPair: mockKeyEcdsaSecp384,
+    props: {
+      secretKeyByteLength: 50,
+      publicKeyByteLength: 51
+    }
+  }],
+  ['P-521', {
+    id: getKeyId(mockKeyEcdsaSecp521),
+    serializedKeyPair: mockKeyEcdsaSecp521,
+    props: {
+      secretKeyByteLength: 68,
+      publicKeyByteLength: 69
+    }
+  }]
 ]);
