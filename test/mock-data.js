@@ -9,14 +9,14 @@ export const mockKey = {
 };
 
 export const mockKeyEcdsaSecp256 = {
-  type: 'EcdsaSecp256r1VerificationKey2019',
+  type: 'Multikey',
   controller: 'did:example:1234',
   publicKeyMultibase: 'zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw',
   secretKeyMultibase: 'z42twirSb1PULt5Sg6gjgNMsdiLycu6fbA83aX1vVb8e3ncP'
 };
 
 export const mockKeyEcdsaSecp384 = {
-  type: 'EcdsaSecp384r1VerificationKey2019',
+  type: 'Multikey',
   controller: 'did:example:1234',
   publicKeyMultibase: 'z82LkuBieyGShVBhvtE2zoiD6Kma4tJGFtkAhxR5pfkp5QPw4L' +
     'utoYWhvQCnGjdVn14kujQ',
@@ -25,7 +25,7 @@ export const mockKeyEcdsaSecp384 = {
 };
 
 export const mockKeyEcdsaSecp521 = {
-  type: 'EcdsaSecp521r1VerificationKey2019',
+  type: 'Multikey',
   controller: 'did:example:1234',
   publicKeyMultibase: 'z2J9gaYgHvgaEEg2hB8EQMhwh4XxgRwUQdwMwnpa7P9qehd763' +
     'sEVaD9pHGqxCtKpt2xKQWX1d5XGT3GtdrwrAVxg8m9ke9R',
