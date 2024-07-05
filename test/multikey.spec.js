@@ -8,6 +8,8 @@ import {
   testExport,
   testFrom,
   testGenerate,
+  testJWK,
+  testRaw,
   testSignVerify
 } from './assertions.js';
 
@@ -33,6 +35,12 @@ describe('ecdsa-multikey', function() {
       });
       describe('from', function() {
         testFrom({keyType, id, serializedKeyPair});
+      });
+      describe('fromJwk/toJwk', () => {
+        testJWK({curve: keyType});
+      });
+      describe('fromRaw', () => {
+        testRaw({curve: keyType});
       });
     });
   }

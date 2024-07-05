@@ -1,7 +1,6 @@
 /*!
  * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
  */
-import * as base58 from 'base58-universal';
 import * as EcdsaMultikey from '../lib/index.js';
 import chai from 'chai';
 import {
@@ -61,98 +60,6 @@ describe('EcdsaMultikey', () => {
       expect(error).to.be.an.instanceof(TypeError);
       expect(error.message)
         .to.equal('The "publicKeyMultibase" property is required.');
-    });
-  });
-
-  describe('fromJwk/toJwk', () => {
-    it('should round-trip secret JWKs', async () => {
-      const keyPair = await EcdsaMultikey.generate({
-        id: '4e0db4260c87cc200df3',
-        curve: 'P-256'
-      });
-      const jwk1 = await EcdsaMultikey.toJwk({keyPair, secretKey: true});
-      should.exist(jwk1.d);
-      const keyPairImported = await EcdsaMultikey.fromJwk(
-        {jwk: jwk1, secretKey: true});
-      const jwk2 = await EcdsaMultikey.toJwk(
-        {keyPair: keyPairImported, secretKey: true});
-      expect(jwk1).to.eql(jwk2);
-    });
-
-    it('should round-trip public JWKs', async () => {
-      const keyPair = await EcdsaMultikey.generate({
-        id: '4e0db4260c87cc200df3',
-        curve: 'P-256'
-      });
-      const jwk1 = await EcdsaMultikey.toJwk({keyPair});
-      should.not.exist(jwk1.d);
-      const keyPairImported = await EcdsaMultikey.fromJwk({jwk: jwk1});
-      const jwk2 = await EcdsaMultikey.toJwk({keyPair: keyPairImported});
-      expect(jwk1).to.eql(jwk2);
-    });
-  });
-
-  describe('fromRaw', () => {
-    it('should import raw public key', async () => {
-      const curve = 'P-256';
-      const keyPair = await EcdsaMultikey.generate({curve});
-
-      // first export
-      const expectedPublicKey = base58.decode(
-        keyPair.publicKeyMultibase.slice(1)).slice(2);
-      const {publicKey} = await keyPair.export({publicKey: true, raw: true});
-      expect(expectedPublicKey).to.deep.equal(publicKey);
-
-      // then import
-      const imported = await EcdsaMultikey.fromRaw({curve, publicKey});
-
-      // then re-export to confirm
-      const {publicKey: publicKey2} = await imported.export(
-        {publicKey: true, raw: true});
-      expect(expectedPublicKey).to.deep.equal(publicKey2);
-    });
-
-    it('should import raw secret key', async () => {
-      const curve = 'P-256';
-      const keyPair = await EcdsaMultikey.generate({curve});
-
-      // first export
-      const expectedSecretKey = base58.decode(
-        keyPair.secretKeyMultibase.slice(1)).slice(2);
-      const {secretKey, publicKey} = await keyPair.export(
-        {secretKey: true, raw: true});
-      expect(expectedSecretKey).to.deep.equal(secretKey);
-
-      // then import
-      const imported = await EcdsaMultikey.fromRaw(
-        {curve, secretKey, publicKey});
-
-      // then re-export to confirm
-      const {secretKey: secretKey2} = await imported.export(
-        {secretKey: true, raw: true});
-      expect(expectedSecretKey).to.deep.equal(secretKey2);
-    });
-
-    it('should import raw secret key for key agreement', async () => {
-      const curve = 'P-256';
-      const keyPair = await EcdsaMultikey.generate({curve, keyAgreement: true});
-
-      // first export
-      const expectedSecretKey = base58.decode(
-        keyPair.secretKeyMultibase.slice(1)).slice(2);
-      const {secretKey, publicKey} = await keyPair.export(
-        {secretKey: true, raw: true});
-      expect(expectedSecretKey).to.deep.equal(secretKey);
-
-      // then import
-      const imported = await EcdsaMultikey.fromRaw(
-        {curve, secretKey, publicKey, keyAgreement: true});
-      expect(imported.keyAgreement).to.equal(true);
-
-      // then re-export to confirm
-      const {secretKey: secretKey2} = await imported.export(
-        {secretKey: true, raw: true});
-      expect(expectedSecretKey).to.deep.equal(secretKey2);
     });
   });
 
