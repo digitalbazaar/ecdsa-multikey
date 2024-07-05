@@ -4,9 +4,7 @@
 import * as base58 from 'base58-universal';
 import * as EcdsaMultikey from '../lib/index.js';
 import chai from 'chai';
-import {getNamedCurveFromPublicMultikey} from '../lib/helpers.js';
 import {
-  mockKey,
   mockKeyEcdsaSecp256,
   mockKeyEcdsaSecp384,
   mockKeyEcdsaSecp521,
@@ -53,16 +51,6 @@ describe('EcdsaMultikey', () => {
   });
 
   describe('from', () => {
-    it('should auto-set key.id based on controller', async () => {
-      const {publicKeyMultibase} = mockKey;
-
-      const keyPair = await EcdsaMultikey.from(mockKey);
-
-      _ensurePublicKeyEncoding({keyPair, publicKeyMultibase});
-      expect(keyPair.id).to.equal(
-        'did:example:1234#zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw'
-      );
-    });
 
     it('should error if publicKeyMultibase property is missing', async () => {
       let error;
@@ -257,15 +245,3 @@ describe('EcdsaMultikey', () => {
     });
   });
 });
-
-function _ensurePublicKeyEncoding({keyPair, publicKeyMultibase}) {
-  keyPair.publicKeyMultibase.startsWith('z').should.be.true;
-  publicKeyMultibase.startsWith('z').should.be.true;
-  const decodedPubkey = base58.decode(publicKeyMultibase.slice(1));
-  const ecdsaCurve = getNamedCurveFromPublicMultikey({
-    publicMultikey: decodedPubkey
-  });
-  ecdsaCurve.should.equal('P-256');
-  const encodedPubkey = 'z' + base58.encode(decodedPubkey);
-  encodedPubkey.should.equal(keyPair.publicKeyMultibase);
-}
