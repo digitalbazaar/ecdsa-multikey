@@ -6,6 +6,8 @@ import chai from 'chai';
 import * as EcdsaMultikey from '../lib/index.js';
 import {stringToUint8Array} from './text-encoder.js';
 import {CryptoKey} from '../lib/crypto.js';
+import {webcrypto} from '../lib/crypto.js';
+import {exportKeyPair} from '../lib/serialize.js';
 
 chai.should();
 const {expect} = chai;
@@ -75,7 +77,6 @@ export function testGenerate({
       err = e;
     }
     expect(err).to.not.exist;
-
     expect(keyPair).to.have.property('publicKeyMultibase');
     expect(keyPair).to.have.property('secretKeyMultibase');
     expect(keyPair).to.have.property('publicKey');
@@ -98,3 +99,72 @@ export function testGenerate({
   });
 }
 
+export function testExport({curve}) {
+  it('should export id, type and key material', async () => {
+    const keyPair = await EcdsaMultikey.generate({
+      id: '4e0db4260c87cc200df3',
+      controller: 'did:example:1234',
+      curve
+    });
+    const keyPairExported = await keyPair.export({
+      publicKey: true, secretKey: true
+    });
+
+    const expectedProperties = [
+      'id', 'type', 'controller', 'publicKeyMultibase', 'secretKeyMultibase'
+    ];
+    for(const property of expectedProperties) {
+      expect(keyPairExported).to.have.property(property);
+      expect(keyPairExported[property]).to.exist;
+    }
+
+    expect(keyPairExported.controller).to.equal('did:example:1234');
+    expect(keyPairExported.type).to.equal('Multikey');
+    expect(keyPairExported.id).to.equal('4e0db4260c87cc200df3');
+  });
+
+  it('should only export public key if specified', async () => {
+    const keyPair = await EcdsaMultikey.generate({
+      id: '4e0db4260c87cc200df3',
+      curve
+    });
+    const keyPairExported = await keyPair.export({publicKey: true});
+
+    expect(keyPairExported).not.to.have.property('secretKeyMultibase');
+    expect(keyPairExported).to.have.property('publicKeyMultibase');
+    expect(keyPairExported).to.have.property('id', '4e0db4260c87cc200df3');
+    expect(keyPairExported).to.have.property('type', 'Multikey');
+  });
+
+  it('should only export secret key if available', async () => {
+    const algorithm = {name: 'ECDSA', namedCurve: curve};
+    const keyPair = await webcrypto.subtle.generateKey(
+      algorithm, true, ['sign', 'verify']);
+    delete keyPair.privateKey;
+
+    const keyPairExported = await exportKeyPair({
+      keyPair,
+      publicKey: true,
+      secretKey: true,
+      includeContext: true
+    });
+
+    expect(keyPairExported).not.to.have.property('secretKeyMultibase');
+  });
+
+  it('should export raw public key', async () => {
+    const keyPair = await EcdsaMultikey.generate({curve});
+    const expectedPublicKey = base58.decode(
+      keyPair.publicKeyMultibase.slice(1)).slice(2);
+    const {publicKey} = await keyPair.export({publicKey: true, raw: true});
+    expect(expectedPublicKey).to.deep.equal(publicKey);
+  });
+
+  it('should export raw secret key', async () => {
+    const keyPair = await EcdsaMultikey.generate({curve});
+    const expectedSecretKey = base58.decode(
+      keyPair.secretKeyMultibase.slice(1)).slice(2);
+    const {secretKey} = await keyPair.export({secretKey: true, raw: true});
+    expect(expectedSecretKey).to.deep.equal(secretKey);
+  });
+}

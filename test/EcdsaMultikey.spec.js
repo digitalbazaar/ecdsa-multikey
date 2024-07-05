@@ -4,17 +4,13 @@
 import * as base58 from 'base58-universal';
 import * as EcdsaMultikey from '../lib/index.js';
 import chai from 'chai';
-import {webcrypto} from '../lib/crypto.js';
 import {getNamedCurveFromPublicMultikey} from '../lib/helpers.js';
-import {exportKeyPair} from '../lib/serialize.js';
 import {
   mockKey,
   mockKeyEcdsaSecp256,
   mockKeyEcdsaSecp384,
   mockKeyEcdsaSecp521,
-  keyTypes
 } from './mock-data.js';
-import {testAlgorithm, testGenerate} from './assertions.js';
 
 const should = chai.should();
 const {expect} = chai;
@@ -30,11 +26,6 @@ describe('EcdsaMultikey', () => {
   });
 
   describe('algorithm', () => {
-    for(const [keyType, {serializedKeyPair}] of keyTypes) {
-      describe(keyType, function() {
-        testAlgorithm({keyType, serializedKeyPair});
-      });
-    }
     it('deriveSecret() should not be supported by default', async () => {
       const keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
 
@@ -58,84 +49,6 @@ describe('EcdsaMultikey', () => {
       const secret2 = await keyPair2.deriveSecret({publicKey: keyPair1});
 
       expect(secret1).to.deep.eql(secret2);
-    });
-  });
-
-  describe('generate', function() {
-    for(const [keyType, {props}] of keyTypes) {
-      describe(keyType, function() {
-        testGenerate({curve: keyType, ...props});
-      });
-    }
-  });
-
-  describe('export', () => {
-    it('should export id, type and key material', async () => {
-      const keyPair = await EcdsaMultikey.generate({
-        id: '4e0db4260c87cc200df3',
-        controller: 'did:example:1234',
-        curve: 'P-256'
-      });
-      const keyPairExported = await keyPair.export({
-        publicKey: true, secretKey: true
-      });
-
-      const expectedProperties = [
-        'id', 'type', 'controller', 'publicKeyMultibase', 'secretKeyMultibase'
-      ];
-      for(const property of expectedProperties) {
-        expect(keyPairExported).to.have.property(property);
-        expect(keyPairExported[property]).to.exist;
-      }
-
-      expect(keyPairExported.controller).to.equal('did:example:1234');
-      expect(keyPairExported.type).to.equal('Multikey');
-      expect(keyPairExported.id).to.equal('4e0db4260c87cc200df3');
-    });
-
-    it('should only export public key if specified', async () => {
-      const keyPair = await EcdsaMultikey.generate({
-        id: '4e0db4260c87cc200df3',
-        curve: 'P-256'
-      });
-      const keyPairExported = await keyPair.export({publicKey: true});
-
-      expect(keyPairExported).not.to.have.property('secretKeyMultibase');
-      expect(keyPairExported).to.have.property('publicKeyMultibase');
-      expect(keyPairExported).to.have.property('id', '4e0db4260c87cc200df3');
-      expect(keyPairExported).to.have.property('type', 'Multikey');
-    });
-
-    it('should only export secret key if available', async () => {
-      const algorithm = {name: 'ECDSA', namedCurve: 'P-256'};
-      const keyPair = await webcrypto.subtle.generateKey(
-        algorithm, true, ['sign', 'verify']);
-      delete keyPair.privateKey;
-
-      const keyPairExported = await exportKeyPair({
-        keyPair,
-        publicKey: true,
-        secretKey: true,
-        includeContext: true
-      });
-
-      expect(keyPairExported).not.to.have.property('secretKeyMultibase');
-    });
-
-    it('should export raw public key', async () => {
-      const keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
-      const expectedPublicKey = base58.decode(
-        keyPair.publicKeyMultibase.slice(1)).slice(2);
-      const {publicKey} = await keyPair.export({publicKey: true, raw: true});
-      expect(expectedPublicKey).to.deep.equal(publicKey);
-    });
-
-    it('should export raw secret key', async () => {
-      const keyPair = await EcdsaMultikey.generate({curve: 'P-256'});
-      const expectedSecretKey = base58.decode(
-        keyPair.secretKeyMultibase.slice(1)).slice(2);
-      const {secretKey} = await keyPair.export({secretKey: true, raw: true});
-      expect(expectedSecretKey).to.deep.equal(secretKey);
     });
   });
 
