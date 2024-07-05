@@ -28,3 +28,9 @@ export const mockKeyEcdsaSecp521 = {
   publicKeyMultibase: 'zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw',
   secretKeyMultibase: 'z42twirSb1PULt5Sg6gjgNMsdiLycu6fbA83aX1vVb8e3ncP'
 };
+
+export const keyTypes = new Map([
+  ['P-256', mockKeyEcdsaSecp256],
+  ['P-384', mockKeyEcdsaSecp384],
+  ['P-521', mockKeyEcdsaSecp521]
+])

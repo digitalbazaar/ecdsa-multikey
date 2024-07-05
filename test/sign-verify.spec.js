@@ -1,47 +1,51 @@
 /*!
- * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2023-2024 Digital Bazaar, Inc.
  */
 import chai from 'chai';
 import * as EcdsaMultikey from '../lib/index.js';
-import {mockKey} from './mock-data.js';
+import {keyTypes} from './mock-data.js';
 import {stringToUint8Array} from './text-encoder.js';
+
 chai.should();
 const {expect} = chai;
 
-const keyPair = await EcdsaMultikey.from({
-  controller: 'did:example:1234',
-  ...mockKey
-});
-const signer = keyPair.signer();
-const verifier = keyPair.verifier();
+for(const [keyType, exportedKey] of keyTypes) {
+  _testKeyType({keyType, exportedKey});
+}
 
-describe('sign and verify', () => {
-  it('works properly', async () => {
-    signer.should.have.property(
-      'id',
-      'did:example:1234#zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw'
-    );
-    verifier.should.have.property(
-      'id',
-      'did:example:1234#zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw'
-    );
-    const data = stringToUint8Array('test 1234');
-    const signature = await signer.sign({data});
-    const result = await verifier.verify({data, signature});
-    result.should.be.true;
-  });
+function _testKeyType({keyType, exportedKey}) {
+  describe(keyType, function() {
+    describe(`sign and verify`, async function() {
+      const id = `${exportedKey.controller}#${exportedKey.publicMultibase}`;
+      const keyPair = await EcdsaMultikey.from({
+        id,
+        ...exportedKey
+      });
+      const signer = keyPair.signer();
+      const verifier = keyPair.verifier();
 
-  it('has proper signature format', async () => {
-    const data = stringToUint8Array('test 1234');
-    const signature = await signer.sign({data});
-    expect(signature).to.be.instanceof(Uint8Array);
-  });
+      it('works properly', async () => {
+        signer.should.have.property('id', id);
+        verifier.should.have.property('id', id);
+        const data = stringToUint8Array('test 1234');
+        const signature = await signer.sign({data});
+        const result = await verifier.verify({data, signature});
+        result.should.be.true;
+      });
 
-  it('fails if signing data is changed', async () => {
-    const data = stringToUint8Array('test 1234');
-    const signature = await signer.sign({data});
-    const changedData = stringToUint8Array('test 4321');
-    const result = await verifier.verify({data: changedData, signature});
-    result.should.be.false;
+      it('has proper signature format', async () => {
+        const data = stringToUint8Array('test 1234');
+        const signature = await signer.sign({data});
+        expect(signature).to.be.instanceof(Uint8Array);
+      });
+
+      it('fails if signing data is changed', async () => {
+        const data = stringToUint8Array('test 1234');
+        const signature = await signer.sign({data});
+        const changedData = stringToUint8Array('test 4321');
+        const result = await verifier.verify({data: changedData, signature});
+        result.should.be.false;
+      });
+    });
   });
-});
+}
