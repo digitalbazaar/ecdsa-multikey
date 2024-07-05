@@ -36,7 +36,7 @@ export const mockKeyEcdsaSecp521 = {
 const getKeyId = ({controller, publicKeyMultibase}) =>
   `${controller}#${publicKeyMultibase}`;
 
-export const keyTypes = new Map([
+export const multikeys = new Map([
   ['P-256', {
     id: getKeyId(mockKeyEcdsaSecp256),
     serializedKeyPair: mockKeyEcdsaSecp256,
