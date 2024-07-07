@@ -39,7 +39,10 @@ const getKeyId = ({controller, publicKeyMultibase}) =>
 export const multikeys = new Map([
   ['P-256', {
     id: getKeyId(mockKeyEcdsaSecp256),
-    serializedKeyPair: mockKeyEcdsaSecp256,
+    serializedKeyPair: {
+      ...mockKeyEcdsaSecp256,
+      type: 'Multikey'
+    },
     props: {
 
     }
