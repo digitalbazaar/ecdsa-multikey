@@ -9,7 +9,7 @@ export const mockKey = {
 };
 
 export const mockKeyEcdsaSecp256 = {
-  type: 'Multikey',
+  type: 'EcdsaSecp256r1VerificationKey2019',
   controller: 'did:example:1234',
   publicKeyMultibase: 'zDnaeSMnptAKpH4AD41vTkwzjznW7yNetdRh9FJn8bJsbsdbw',
   secretKeyMultibase: 'z42twirSb1PULt5Sg6gjgNMsdiLycu6fbA83aX1vVb8e3ncP'
