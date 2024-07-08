@@ -8,6 +8,13 @@ export const mockKey = {
   secretKeyMultibase: 'z42twirSb1PULt5Sg6gjgNMsdiLycu6fbA83aX1vVb8e3ncP'
 };
 
+export const mockKeyEcdsaSecp256k1 = {
+  type: 'Multikey',
+  controller: 'did:example:1234',
+  publicKeyMultibase: 'zQ3shwLBJHiP3Z3g9j4AsiFYNXApgBsb8FG6mXvzukxTzwS3R',
+  secretKeyMultibase: 'z42sVDC1F6YZVT2LZAb84f7GDwei5LcnUbP3GMDhYMY8fUFc',
+};
+
 export const mockKeyEcdsaSecp256 = {
   type: 'EcdsaSecp256r1VerificationKey2019',
   controller: 'did:example:1234',
