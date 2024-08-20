@@ -49,7 +49,9 @@ describe('EcdsaMultikey secp256k1 support', () => {
       let keyPair;
       let error;
       try {
-        keyPair = await EcdsaMultikey.generate({curve: SECP256K1_CURVE_IDENTIFIER});
+        keyPair = await EcdsaMultikey.generate({
+          curve: SECP256K1_CURVE_IDENTIFIER
+        });
       } catch(e) {
         error = e;
       }
@@ -125,7 +127,9 @@ describe('EcdsaMultikey secp256k1 support', () => {
     });
 
     it('should export raw public key', async () => {
-      const keyPair = await EcdsaMultikey.generate({curve: SECP256K1_CURVE_IDENTIFIER});
+      const keyPair = await EcdsaMultikey.generate({
+        curve: SECP256K1_CURVE_IDENTIFIER
+      });
       const expectedPublicKey = base58.decode(
         keyPair.publicKeyMultibase.slice(1)).slice(2);
       const {publicKey} = await keyPair.export({publicKey: true, raw: true});
@@ -133,7 +137,9 @@ describe('EcdsaMultikey secp256k1 support', () => {
     });
 
     it('should export raw secret key', async () => {
-      const keyPair = await EcdsaMultikey.generate({curve: SECP256K1_CURVE_IDENTIFIER});
+      const keyPair = await EcdsaMultikey.generate({
+        curve: SECP256K1_CURVE_IDENTIFIER
+      });
       const expectedSecretKey = base58.decode(
         keyPair.secretKeyMultibase.slice(1)).slice(2);
       const {secretKey} = await keyPair.export({secretKey: true, raw: true});
