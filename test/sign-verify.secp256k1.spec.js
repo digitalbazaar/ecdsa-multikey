@@ -19,11 +19,11 @@ describe('sign and verify', () => {
   it('works properly', async () => {
     signer.should.have.property(
       'id',
-      'did:example:1234#zQ3shwLBJHiP3Z3g9j4AsiFYNXApgBsb8FG6mXvzukxTzwS3R'
+      'did:example:1234#zQ3shNetPDi5oNHv5zUheM1WjwJ86vYWZFu9X6jb6w1dS5hYN'
     );
     verifier.should.have.property(
       'id',
-      'did:example:1234#zQ3shwLBJHiP3Z3g9j4AsiFYNXApgBsb8FG6mXvzukxTzwS3R'
+      'did:example:1234#zQ3shNetPDi5oNHv5zUheM1WjwJ86vYWZFu9X6jb6w1dS5hYN'
     );
     const data = stringToUint8Array('test 1234');
     const signature = await signer.sign({data});

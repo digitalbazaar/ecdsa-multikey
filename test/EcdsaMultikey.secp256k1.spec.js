@@ -149,7 +149,7 @@ describe('EcdsaMultikey secp256k1 support', () => {
 
       _ensurePublicKeyEncoding({keyPair, publicKeyMultibase});
       expect(keyPair.id).to.equal(
-        'did:example:1234#zQ3shwLBJHiP3Z3g9j4AsiFYNXApgBsb8FG6mXvzukxTzwS3R'
+        'did:example:1234#zQ3shNetPDi5oNHv5zUheM1WjwJ86vYWZFu9X6jb6w1dS5hYN'
       );
     });
 
