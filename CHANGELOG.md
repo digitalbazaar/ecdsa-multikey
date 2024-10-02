@@ -1,5 +1,11 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
+## 1.8.0 - 2024-10-dd
+
+### Added
+- Include `id` and `controller` properties when importing key types of
+  `JsonWebKey` or `JsonWebKey2020`.
+
 ## 1.7.0 - 2024-03-17
 
 ### Added
