@@ -1,6 +1,6 @@
 # @digitalbazaar/ecdsa-multikey ChangeLog
 
-## 1.8.0 - 2024-10-dd
+## 1.8.0 - 2024-10-02
 
 ### Added
 - Include `id` and `controller` properties when importing key types of
